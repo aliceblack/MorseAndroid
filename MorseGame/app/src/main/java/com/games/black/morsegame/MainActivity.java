@@ -36,7 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
         final HashMap morse = morseCode.getMorseCharacters();
 
-        Button buttonRandom = (Button) findViewById(R.id.buttonRandom);
+        final Button buttonRandom = (Button) findViewById(R.id.buttonRandom);
+        final Button buttonEnter = (Button) findViewById(R.id.buttonEnter);
+        final EditText editText = findViewById(R.id.editTextMorse);
+
         buttonRandom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,14 +50,17 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView textViewLetter = (TextView)findViewById(R.id.textViewLetter);
                 textViewLetter.setText(randomLetter);
+
+                editText.setVisibility(View.VISIBLE);
+                buttonEnter.setVisibility(View.VISIBLE);
             }
         });
 
-        Button buttonEnter = (Button) findViewById(R.id.buttonEnter);
+
         buttonEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editText = (EditText)findViewById(R.id.editTextMorse);
+
                 String userInput = editText.getText().toString();
 
                 TextView textViewResponse = (TextView)findViewById(R.id.textViewResponse);
@@ -70,17 +76,20 @@ public class MainActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putInt("highScore", highScore);
                         editor.commit();
-
                         textViewHighScore.setText("High score: "+highScore);
                     }
                 }
                 else {
                     textViewResponse.setText("Wrong, the correct answer was "+correctAnswer);
                     score=0;
-                }
+                    TextView textViewScore = (TextView)findViewById(R.id.textViewScore);
+                    textViewScore.setText("Score: "+score);
 
+                }
                 InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+                buttonEnter.setVisibility(View.INVISIBLE);
             }
         });
     }
